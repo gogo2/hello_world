@@ -47,8 +47,8 @@ if (${SYCL_IMPL} STREQUAL "ComputeCpp")
 elseif (${SYCL_IMPL} STREQUAL "hipSYCL")
     set(hipSYCL_DIR "/usr/local/lib/cmake")
 
-    set(HIPSYCL_PLATFORM cuda CACHE STRING "hipSYCL platform: cpu|rocm|cuda" FORCE)
-    set(HIPSYCL_GPU_ARCH sm_30 CACHE STRING "hipSYCL GPU architecture, eg. gfx803" FORCE)
+    set(HIPSYCL_PLATFORM rocm CACHE STRING "hipSYCL platform: cpu|rocm|cuda" FORCE)
+    set(HIPSYCL_GPU_ARCH gfx803 CACHE STRING "hipSYCL GPU architecture, eg. gfx803 or sm_30" FORCE)
 
     find_package(hipSYCL CONFIG REQUIRED)
 
