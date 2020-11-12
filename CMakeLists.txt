@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 set(BASE_NAME hello_world_sycl)
-project(${BASE_NAME})
+project(${BASE_NAME} LANGUAGES CXX)
 
 
 #   CMAKE & CXX SETUP
@@ -47,10 +47,10 @@ if (${SYCL_IMPL} STREQUAL "ComputeCpp")
 elseif (${SYCL_IMPL} STREQUAL "hipSYCL")
     set(hipSYCL_DIR "/usr/local/lib/cmake")
 
-    find_package(hipSYCL CONFIG REQUIRED)
-
     set(HIPSYCL_PLATFORM cuda CACHE STRING "hipSYCL platform: cpu|rocm|cuda" FORCE)
     set(HIPSYCL_GPU_ARCH sm_30 CACHE STRING "hipSYCL GPU architecture, eg. gfx803" FORCE)
+
+    find_package(hipSYCL CONFIG REQUIRED)
 
     target_include_directories(${BASE_NAME}
             PUBLIC /usr/local/include/hipSYCL/contrib
