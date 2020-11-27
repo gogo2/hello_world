@@ -11,7 +11,7 @@ target_compile_options(${BASE_NAME} ${BASE_CXX_FLAGS})
 
 
 #   SYCL SETUP
-set(SYCL_IMPL "hipSYCL" CACHE STRING "SYCL implementation to use: ComputeCpp|hipSYCL" FORCE)
+set(SYCL_IMPL "hipSYCL" CACHE STRING "SYCL implementation to use: ComputeCpp|hipSYCL|triSYCL|oneAPI" FORCE)
 
 if (${SYCL_IMPL} STREQUAL "ComputeCpp")
     find_package(ComputeCpp REQUIRED)
@@ -45,6 +45,12 @@ elseif (${SYCL_IMPL} STREQUAL "hipSYCL")
     else ()
         add_compile_definitions(HIPSYCL_DEBUG_LEVEL=1)
     endif ()
+
+elseif (${PNDFTSTR_SYCL_IMPL} STREQUAL "triSYCL")
+    message(FATAL_ERROR "triSYCL is not supported yet")
+
+elseif (${PNDFTSTR_SYCL_IMPL} STREQUAL "oneAPI")
+    message(FATAL_ERROR "Intel oneAPI SYCL is not supported yet")
 
 else ()
     message(FATAL_ERROR "Wrong or not supported SYCL implementation: " ${PNDFTSTR_SYCL_IMPL})
