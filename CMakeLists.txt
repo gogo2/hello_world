@@ -1,4 +1,12 @@
 cmake_minimum_required(VERSION 3.16)
+set(SYCL_COMPILER "oneAPI" CACHE STRING "SYCL implementation to use: ComputeCpp|hipSYCL|triSYCL|oneAPI" FORCE)
+
+#   oneAPI specific
+if (${SYCL_COMPILER} STREQUAL "oneAPI")
+    set(CMAKE_CXX_COMPILER dpcpp)
+endif ()
+
+
 project(hello_worl LANGUAGES CXX)
 
 #   CMAKE & CXX SETUP
@@ -13,31 +21,33 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 message(STATUS "CMake build type: " ${CMAKE_BUILD_TYPE})
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
     set(BASE_CXX_FLAGS PRIVATE $<$<CXX_COMPILER_ID:GNU>:-O0 -g3 -pedantic -Wall -Wextra -Wno-unknown-pragmas -static-libstdc++>)
+    set(BASE_CXX_FLAGS PRIVATE $<$<CXX_COMPILER_ID:CLANG>:-O0 -g3 -pedantic -Wall -Wextra -Wno-unknown-pragmas -static-libstdc++>)
 else ()
     set(BASE_CXX_FLAGS PRIVATE $<$<CXX_COMPILER_ID:GNU>:-O3 -pedantic -Wall -Wextra -Wno-unknown-pragmas -static-libstdc++>)
+    set(BASE_CXX_FLAGS PRIVATE $<$<CXX_COMPILER_ID:CLANG>:-O3 -pedantic -Wall -Wextra -Wno-unknown-pragmas -static-libstdc++>)
 endif ()
 
-option(BUILD_SYCL ON)
+set(BUILD_SYCL ON)
 option(BUILD_OCL OFF)
 option(BUILD_OMP OFF)
 option(BUILD_MPI OFF)
 
 
 #  MODULES SETUP
-if (${BUILD_SYCL})
-    include_directories(sycl)
-endif ()
+#if (${BUILD_SYCL})
+add_subdirectory(sycl)
+#endif ()
 
 if (${BUILD_OCL})
-include_directories(ocl)
+    add_subdirectory(ocl)
 endif ()
 
 if (${BUILD_OMP})
-include_directories(omp)
+    add_subdirectory(omp)
 endif ()
 
 if (${BUILD_MPI})
-include_directories(mpi)
+    add_subdirectory(mpi)
 endif ()
 
 

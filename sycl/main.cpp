@@ -1,10 +1,10 @@
-#include <SYCL/sycl.hpp>
+#include <CL/sycl.hpp>
 #include <array>
 #include <iostream>
 
 
 constexpr int SIZE = 4;
-constexpr int N = 16384;
+constexpr int N = 4;
 
 
 struct  array_wrapper{
@@ -14,9 +14,9 @@ struct  array_wrapper{
 using VEC_T = array_wrapper;
 
 int main() {
-    std::array<VEC_T, N> vec_a{}, vec_b{}, vec_c{};
+    std::array<VEC_T, N> vec_a{1,2,3,4}, vec_b{5,6,7,8}, vec_c{};
 
-    sycl::queue queue{sycl::gpu_selector()};
+    sycl::queue queue{sycl::default_selector()};
 
     std::cout << queue.get_device().get_info<sycl::info::device::name>() << std::endl;
 
